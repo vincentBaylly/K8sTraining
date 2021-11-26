@@ -197,3 +197,31 @@ Vérifier les informations du service nouvellement créé
 ```bash
 kubectl get service
 ```
+
+Creer un autre pour tester l'accessibilite au service
+```bash
+kubectl create pod tmp-shell --image alpine
+```
+
+Lancer la commande pour tester la connexion
+```bash
+kubectl exec -it tmp-shell -- curl httpenv:8888
+```
+
+Voici la sortie de la commande
+```json
+{
+  "HOME": "/root",
+  "HOSTNAME": "httpenv-6fdc8554fb-nz4bz",
+  "KUBERNETES_PORT": "tcp://10.96.0.1:443",
+  "KUBERNETES_PORT_443_TCP": "tcp://10.96.0.1:443",
+  "KUBERNETES_PORT_443_TCP_ADDR": "10.96.0.1",
+  "KUBERNETES_PORT_443_TCP_PORT": "443",
+  "KUBERNETES_PORT_443_TCP_PROTO": "tcp",
+  "KUBERNETES_SERVICE_HOST": "10.96.0.1",
+  "KUBERNETES_SERVICE_PORT": "443",
+  "KUBERNETES_SERVICE_PORT_HTTPS": "443",
+  "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+}
+```
+
