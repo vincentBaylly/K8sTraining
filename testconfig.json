@@ -1,0 +1,38 @@
+{
+    "kind": "Deployment",
+    "apiVersion": "apps/v1",
+    "metadata": {
+        "name": "sample",
+        "creationTimestamp": null,
+        "labels": {
+            "app": "sample"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "selector": {
+            "matchLabels": {
+                "app": "sample"
+            }
+        },
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "sample"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "name": "nginx",
+                        "image": "nginx",
+                        "resources": {}
+                    }
+                ]
+            }
+        },
+        "strategy": {}
+    },
+    "status": {}
+}

@@ -5,7 +5,7 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: backend
@@ -15,14 +15,14 @@ spec:
         app: backend
     spec:
       containers:
-      - name: flask-backend
-        image: backend:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 5000
-        env:
-        - name: DATABASE_URI
-          value: pg-service
+        - name: flask-backend
+          image: backend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DATABASE_URI
+              value: pg-service
 ---
 apiVersion: v1
 kind: Service
@@ -35,5 +35,5 @@ spec:
   selector:
     app: backend
   ports:
-  - port: 5000
-    targetPort: 5000
+    - port: 5000
+      targetPort: 5000

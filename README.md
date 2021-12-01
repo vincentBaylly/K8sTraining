@@ -199,16 +199,19 @@ kubectl get service
 ```
 
 Creer un autre pour tester l'accessibilite au service
+
 ```bash
 kubectl create pod tmp-shell --image alpine
 ```
 
 Lancer la commande pour tester la connexion
+
 ```bash
 kubectl exec -it tmp-shell -- curl httpenv:8888
 ```
 
 Voici la sortie de la commande
+
 ```json
 {
   "HOME": "/root",
@@ -225,3 +228,149 @@ Voici la sortie de la commande
 }
 ```
 
+## Creation d'un service NodePort
+
+Verifier le status de nos services avant de la creation du NodePort
+
+```bash
+kubectl get service
+```
+
+Puis lancer la commande pour creer le nouveau service
+
+```bash
+kubectl expose deployment/httpenv --port 8888 --name httpenv-np --type NodePort
+```
+
+Vérifier les informations du service nouvellement créé
+
+```bash
+kubectl get service
+```
+
+## Creation d'un service LoadBalancer
+
+Verifier le status de nos services avant de la creation du LoadBalancer
+
+```bash
+kubectl get service
+```
+
+Puis lancer la commande pour creer le nouveau service
+
+```bash
+kubectl expose deployment/httpenv --port 8888 --name httpenv-lb --type LoadBalancer
+```
+
+Vérifier les informations du service nouvellement créé
+
+```bash
+kubectl get service
+```
+
+le service peut etre contacter avec la commande ou via un fureteur
+
+```bash
+curl localhost:8888
+```
+
+Supprimer les services et deploiements pour remettre la stack d'objet à zero
+
+```bash
+kubectl delete service/httpenv service/httpenv-np
+kubectl delete service/httpenv-lb deployment/httpenv
+```
+
+## service DNS
+
+Les namespaces et les noms des pods de kubernetes peuvent etre utiliser
+pour faire la resolution DNS.
+
+Retrouver la liste des namespaces des elements kubernetes avec la commande
+
+```bash
+kubectl get namespaces
+```
+
+![FQDN](assets/FQDN.jfif)
+
+les services ont egalement un FQDN
+
+```bash
+curl <hostname>.<namespace>.svc.cluster.local
+```
+
+# Generator
+
+```bash
+kubectl create deployment sample --image nginx --dry-run -o yaml
+kubectl create deployment test --image nginx --dry-run -o yaml
+kubectl create job test --image nginx --dry-run -o yaml
+kubectl expose deployment/test --port 80 --dry-run -o yaml
+```
+
+## run confusion
+
+```bash
+kubectl run test --image nginx --dry-run
+kubectl run test --image nginx --port 80 --expose --dry-run
+kubectl run test --restart OnFailure --dry-run
+kubectl run test --restart Never --dry-run
+kubectl run test --schedule “*/1 * * *” --dry-run
+```
+
+# gestion de kubernetes
+
+```bash
+kubectl apply -f my-resources.yaml
+```
+
+# YAML file
+
+```bash
+kubectl api-resources
+```
+
+```bash
+kubectl api-versions
+```
+
+```bash
+kubectl explain service --recursive
+kubectl explain service.spec
+kubectl explain service.spec.type
+```
+
+# Monitoring
+
+```bash
+kubectl create -f prometheus/prometheus.yml
+kubectl apply -f k8s-monitoring/monitoring.yml
+```
+
+# Pratique
+
+## database
+
+creation d'une base de donnee postgre
+
+```bash
+docker build -t fullstackappdb .
+kubectl exec -it postgres -c postgres -- psql -U postgres
+```
+
+## backend
+
+creation d'un service REST avec python
+
+```bash
+docker build -t backend .
+```
+
+## frontend
+
+creation d'un frontend ReactJS
+
+```bash
+docker build -t frontend .
+```
